@@ -102,6 +102,7 @@ app.onError((err, c) => {
     return c.json({ message: "An error occurred" });
   }
 });
+
 console.log(chalk.green("✅ Server Started on PORT", chalk.bold(3000)));
 console.log(chalk.cyan("🍂 API URL", chalk.bold("http://localhost:3000/api/")));
 
