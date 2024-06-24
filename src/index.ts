@@ -8,6 +8,7 @@ import type { ReturnData } from "./types/anilist";
 import { getPopular } from "./anilist/getPopular";
 import { getPopularMovies } from "./anilist/getPopularMovies";
 import { getEpisodes } from "./provider/episode";
+import { getSources } from "./provider/sources";
 
 const app = new Hono();
 
@@ -93,6 +94,29 @@ app.get("/api/episodes/:id", async (c) => {
   }
 
   return c.json(await getEpisodes(id));
+});
+
+app.get("/api/sources/:provider/:episodeId", async (c) => {
+  let { provider, episodeId } = c.req.param();
+  let audio = c.req.query().audio as "sub" | "dub";
+
+  if (!provider || (provider !== "gogoanime" && provider !== "hianime")) {
+    provider = "hianime";
+  }
+  if (!episodeId) {
+    throw new HTTPException(400, { message: "An episode ID is required" });
+  }
+  if (!audio || (audio !== "dub" && audio !== "sub")) {
+    audio = "sub";
+  }
+
+  return c.json(
+    await getSources(
+      provider as "gogoanime" | "hianime",
+      decodeURIComponent(episodeId),
+      audio
+    )
+  );
 });
 
 app.onError((err, c) => {
