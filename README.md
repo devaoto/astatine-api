@@ -17,6 +17,10 @@ Here're all the features in Astatine API:
 - Better searching
 - All the features a perfect anime website will ever need
 
+## Self Host
+
+Edit `.env.example` file to `.env` and follow it's instruction
+
 <h2>Built with</h2>
 
 Technologies used in the project:
