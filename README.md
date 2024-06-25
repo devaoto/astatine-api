@@ -19,7 +19,18 @@ Here're all the features in Astatine API:
 
 ## Self Host
 
-Edit `.env.example` file to `.env` and follow it's instruction
+Edit `.env.example` file to `.env` and follow it's instruction.
+
+```.env
+CONSUMET_API = # Host one from: https://github.com/consumet/api.consumet.org
+HIANIME_API = # Host one from: https://github.com/ghoshRitesh12/aniwatch-api
+MALSYNC_URI = https://api.malsync.moe/mal/anime/anilist:
+CORS_PROXY = # Host one from: https://github.com/consumet/cors-anywhere/
+```
+
+Remove the end slash from all API endpoints
+
+Run the server with `bun run src/index.ts`
 
 <h2>Built with</h2>
 
