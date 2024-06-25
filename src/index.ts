@@ -9,6 +9,7 @@ import { getPopular } from "./anilist/getPopular";
 import { getPopularMovies } from "./anilist/getPopularMovies";
 import { getEpisodes } from "./provider/episode";
 import { getSources } from "./provider/sources";
+import { advancedSearch } from "./anilist/advancedSearch";
 
 const app = new Hono();
 
@@ -32,7 +33,7 @@ app.get("/api/trending", async (c) => {
   }
 
   if (isNaN(Number(page))) {
-    throw new HTTPException(400, { message: "Post must be a number" });
+    throw new HTTPException(400, { message: "Page must be a number" });
   }
 
   if (isNaN(Number(limit))) {
@@ -70,7 +71,7 @@ app.get("/api/popular", async (c) => {
   };
 
   if (isNaN(Number(page))) {
-    throw new HTTPException(400, { message: "Post must be a number" });
+    throw new HTTPException(400, { message: "Page must be a number" });
   }
 
   if (isNaN(Number(limit))) {
@@ -117,6 +118,44 @@ app.get("/api/sources/:provider/:episodeId", async (c) => {
       audio
     )
   );
+});
+
+app.get("/api/advanced-search", async (c) => {
+  const {
+    query,
+    type = "ANIME",
+    page = 1,
+    perPage = 20,
+    format,
+    sort,
+    genresOrTags,
+    id,
+    year,
+    status,
+    season,
+  } = c.req.query();
+
+  try {
+    const searchResults = await advancedSearch(
+      query,
+      type,
+      Number(page),
+      Number(perPage),
+      format,
+      sort ? sort.split(",") : undefined,
+      genresOrTags ? genresOrTags.split(",") : undefined,
+      id,
+      year ? Number(year) : undefined,
+      status,
+      season
+    );
+    return c.json(searchResults);
+  } catch (error) {
+    throw new HTTPException(500, {
+      message: "Failed to perform advanced search",
+      res: new Response((error as Error).message),
+    });
+  }
 });
 
 app.onError((err, c) => {
