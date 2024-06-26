@@ -10,7 +10,7 @@ import {
 import _ from "lodash";
 
 const bky = ky.extend({
-  timeout: 9000,
+  timeout: 9000
 });
 
 function convertString(input: string): string {
